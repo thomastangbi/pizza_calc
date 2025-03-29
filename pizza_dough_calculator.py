@@ -14,9 +14,46 @@ st.title("🍕 Pizza Dough Calculator")
 
 st.markdown("Calculate how much flour, water, yeast, and salt you need for your pizza night!")
 
-number = st.number_input("Number of Doughballs", min_value=1, value=6)
-size = st.number_input("Size per Doughball (grams)", min_value=50, value=275)
-hydration = st.slider("Hydration (%)", min_value=50, max_value=100, value=65)
+st.markdown("""
+<style>
+    /* Center everything nicely and keep the aesthetic clean */
+    .main {
+        font-family: 'Georgia', serif;
+        color: #111;
+    }
+
+    h1, h2, h3 {
+        color: #000;
+        font-weight: 700;
+    }
+
+    /* Style the button like it's from a vintage bakery */
+    .stButton > button {
+        background-color: #000000;
+        color: white;
+        border: none;
+        padding: 0.5em 1.5em;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 0;
+        transition: background-color 0.3s ease;
+    }
+
+    .stButton > button:hover {
+        background-color: #333;
+    }
+
+    /* Optional: hide Streamlit’s default menu and footer */
+    #MainMenu, footer, header {
+        visibility: hidden;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+
+number = st.number_input("Number of Doughballs", min_value=1, value=6, step=1)
+size = st.number_input("Size per Doughball (grams)", min_value=50, value=275, step=1)
+hydration = st.slider("Hydration (%)", min_value=50, max_value=100, value=65, step=1)
 
 if st.button("Calculate"):
     total_weight = number * size
