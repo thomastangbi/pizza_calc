@@ -1,6 +1,14 @@
 import streamlit as st
+from PIL import Image
 
-st.set_page_config(page_title="Pizza Dough Calculator", page_icon="🍕")
+st.set_page_config(page_title="Pizza Dough Calculator", page_icon="🍕", layout="centered")
+
+# Load and display logo
+logo = Image.open("logo.png")
+st.image(logo, use_column_width=True)
+
+st.title("Pizza Dough Calculator")
+st.markdown("Quickly calculate how much flour, water, salt, and yeast you need.")
 
 st.title("🍕 Pizza Dough Calculator")
 
