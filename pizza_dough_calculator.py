@@ -10,10 +10,6 @@ st.image(logo, use_container_width=True)
 st.title("Pizza Dough Calculator")
 st.markdown("Quickly calculate how much flour, water, salt, and yeast you need.")
 
-st.title("🍕 Pizza Dough Calculator")
-
-st.markdown("Calculate how much flour, water, yeast, and salt you need for your pizza night!")
-
 st.markdown("""
 <style>
     /* Center everything nicely and keep the aesthetic clean */
@@ -49,7 +45,6 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
-
 
 number = st.number_input("Number of Doughballs", min_value=1, value=6, step=1)
 size = st.number_input("Size per Doughball (grams)", min_value=50, value=275, step=1)
