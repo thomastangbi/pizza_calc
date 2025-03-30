@@ -50,6 +50,8 @@ number = st.number_input("Number of Doughballs", min_value=1, value=6, step=1)
 size = st.number_input("Size per Doughball (grams)", min_value=50, value=275, step=1)
 hydration = st.slider("Hydration (%)", min_value=50, max_value=100, value=65, step=1)
 
+advanced = st.selectbox("Advanced options",["Simple", "Advanced"])
+
 if st.button("Calculate"):
     total_weight = number * size
     hydration_ratio = hydration / 100
