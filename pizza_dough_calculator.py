@@ -52,11 +52,11 @@ hydration = st.slider("Hydration (%)", min_value=50, max_value=100, value=65, st
 
 advanced = st.selectbox("Advanced options",["Simple", "Advanced"])
 
-if st.button("Calculate"):
+def neopolitan_pizza_dough_ingredients(number, size, hydration):
     total_weight = number * size
     hydration_ratio = hydration / 100
     salt_ratio = 0.0275
-    yeast_ratio = 0.00229
+    yeast_ratio = 0.0023
 
     flour = total_weight / (1 + hydration_ratio + salt_ratio + yeast_ratio)
     water = flour * hydration_ratio
@@ -67,4 +67,7 @@ if st.button("Calculate"):
     st.write(f"**Flour:** {round(flour)} g")
     st.write(f"**Water:** {round(water)} g")
     st.write(f"**Salt:** {round(salt, 2)} g")
-    st.write(f"**Dry Yeast:** {round(yeast, 2)} g")
+    st.write(f"**Dry Yeast:** {round(yeast, 2)} g")    
+
+if st.button("Calculate"):
+    neopolitan_pizza_dough_ingredients()
