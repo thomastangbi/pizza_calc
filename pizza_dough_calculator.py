@@ -46,6 +46,23 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+DOUGH_TYPES = {
+    "Neapolitan": {
+        "function": calculate_neapolitan,
+        "hydration": 50,
+        "salt_ratio": 0.0275,
+        "yeast_ratio": 0.0023
+    },
+    "Biga": {
+        "function": calculate_biga,  # This one returns a dict with Day 1 & Day 2
+        "hydration": 65,
+        "salt_ratio": 0.0275,
+        "yeast_ratio": 0.0023
+    }
+}
+
+dough_type = st.selectbox("Choose dough type", list(DOUGH_TYPES.keys()))
+
 number = st.number_input("Number of Doughballs", min_value=1, value=6, step=1)
 size = st.number_input("Size per Doughball (grams)", min_value=50, value=275, step=1)
 hydration = st.slider("Hydration (%)", min_value=50, max_value=100, value=65, step=1)
@@ -99,24 +116,6 @@ def calculate_biga(number, size, hydration, salt_ratio, yeast_ratio):
             "Yeast": round(yeast_day2, 2)
         }
     }
-
-
-DOUGH_TYPES = {
-    "Neapolitan": {
-        "function": calculate_neapolitan,
-        "hydration": 50,
-        "salt_ratio": 0.0275,
-        "yeast_ratio": 0.0023
-    },
-    "Biga": {
-        "function": calculate_biga,  # This one returns a dict with Day 1 & Day 2
-        "hydration": 65,
-        "salt_ratio": 0.0275,
-        "yeast_ratio": 0.0023
-    }
-}
-
-dough_type = st.selectbox("Choose dough type", list(DOUGH_TYPES.keys()))
 
 if st.button("Calculate"):
     selected = DOUGH_TYPES[dough_type]
