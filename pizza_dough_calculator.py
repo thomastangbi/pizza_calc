@@ -54,6 +54,13 @@ salt_ratio = 0.0275
 yeast_ratio = 0.0023
 selected_config = 0
 
+#
+def calculate_yeast_percentage(duration_hours, yeast_type="fresh"):
+    base_ratio = 0.25 / (duration_hours ** 0.5)
+    if yeast_type == "dry":
+        return round(base_ratio * 0.33, 4)
+    return round(base_ratio, 4)
+
 # Define dough type calculations 
 def calculate_neapolitan(number, size, hydration, salt_ratio, yeast_ratio):
     total_weight = number * size
@@ -108,22 +115,22 @@ DOUGH_TYPES = {
         "function": calculate_neapolitan,
         "hydration": 50,
         "salt_ratio": 0.025,
-        "yeast_ratio": 0.002
+        "yeast_ratio": 0.002,
+        "yeast_factor": {
+            "Dry": 1,
+            "Fresh": 3
+        },
+        "fermentation": 48
     },
     "Biga": {
         "function": calculate_biga,  # This one returns a dict with Day 1 & Day 2
         "hydration": 65,
         "salt_ratio": 0.025,
-        "yeast_ratio": 0.00065
-    }
-}
-
-YEAST_TYPES = {
-    "Dry": {
-        "factor": 1
-    },
-    "Fresh": {
-        "factor": 3
+        "yeast_ratio": 0.00065,
+        "yeast_factor": {
+            "Dry": 1,
+            "Fresh": 3
+        }
     }
 }
 
@@ -131,6 +138,8 @@ dough_type = st.radio("Select dough type:", options=list(DOUGH_TYPES.keys()), in
 
 if dough_type:
     selected_config = DOUGH_TYPES[dough_type]
+    yeast_types = selected_config["yeast_factor"]
+
 
     st.markdown("---")
     st.subheader("Dough Parameters")
@@ -143,12 +152,22 @@ if dough_type:
     salt_ratio = selected_config["salt_ratio"]
     yeast_ratio = selected_config["yeast_ratio"]
 
-    use_custom = st.checkbox("⚙️ Advanced Options - Manually set salt and yeast ratios")
+    use_custom = st.checkbox("⚙️ Advanced Options")
 
     if use_custom:
-        yeast_type = st.radio("Yeast type", options=YEAST_TYPES, horizontal=True)
-        selected_yeast = YEAST_TYPES[yeast_type]
-        yeast_ratio = st.slider(f"{yeast_type} Yeast ratio (%)", min_value=0.0, max_value=0.5, value=yeast_ratio * 100 * selected_yeast["factor"], step=0.01) / 100
+
+        if selected_config["fermentation"]:
+            fermentation_duration = st.slider("Fermentation (Hours)", min_value=8, max_value=96, value=selected_config["fermentation"], step=8)
+        else:
+            fermentation_duration = 1
+
+        yeast_type = st.radio("Yeast type", options=yeast_types, horizontal=True)
+        if yeast_type == "Fresh":
+            yeast_factor = yeast_types["Fresh"]
+        else:
+            yeast_factor = yeast_types["Dry"]
+
+        yeast_ratio = st.slider(f"{yeast_type} Yeast ratio (%)", min_value=0.0, max_value=0.5, value=yeast_ratio * 100 * yeast_factor, step=0.01) / 100
         salt_ratio = st.slider("Salt ratio (%)", min_value=1.0, max_value=3.5, value=salt_ratio * 100, step=0.1) / 100
 
     if st.button("Calculate"):
